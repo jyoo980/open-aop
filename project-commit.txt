@@ -1,16 +1,23 @@
 Team Member Names:
+ - Raymond Situ
+ - Tony Kong
+ - Benjamin Hwang
+ - Kevin Wong
+ - James Yoo
 
 Team Member Student IDs:
+ - 10639152
 
 Team Member ugrad.cs.ubc.ca Logins:
+ - l4k0b
 
-Initial level commitment (80%, 90%, or 100%):
+Initial level commitment (80%, 90%, or 100%): TODO
 
 Tutorial time that at least one and ideally all members will guarantee to attend
-each week:
+each week: TODO
 
 3+ hours weekly that the group guarantees EACH OTHER to be available
-to meet (ideally face-to-face):
+to meet (ideally face-to-face): TODO
 
 Three one-sentence ideas the team might pursue for the project. Note:
 Each idea should be plausible enough to show that the group has done
@@ -19,8 +26,9 @@ develop into a real project. Together, they should explore some
 meaningfully distinct project options (so, not just three variations
 on the same project).
 
-1. 
+1. A 2D Programming Languages themed game using Scala.
 
-2. 
+2. An extension to the Java language which adds options for more compile-time static
+   validation using annotations.
 
-3.
+3. Abbreviating simplifying access modifiers for OO-languages
