@@ -8,10 +8,12 @@ Team Member Names:
 Team Member Student IDs:
  - 10639152
  - 28353150
+ - 47078150
 
 Team Member ugrad.cs.ubc.ca Logins:
  - l4k0b
  - b2j0b
+ - y2k0b
 
 Initial level commitment (80%, 90%, or 100%): TODO
 
@@ -30,7 +32,6 @@ on the same project).
 
 1. A 2D Programming Languages themed game using Scala.
 
-2. An extension to the Java language which adds options for more compile-time static
-   validation using annotations.
+2. An extension to the Java language which enables interfaces to specify a required constructor utilizing static validation and annotations.
 
 3. Abbreviating simplifying access modifiers for OO-languages
