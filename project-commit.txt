@@ -34,4 +34,4 @@ on the same project).
 
 2. An extension to the Java language which enables interfaces to specify a required constructor utilizing static validation and annotations.
 
-3. Abbreviating simplifying access modifiers for OO-languages
+3. The extension and analysis of cross-cutting concerns in an open-source software system using AspectJ.
