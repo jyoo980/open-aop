@@ -1,19 +1,21 @@
 Team Member Names:
- - Raymond Situ
- - Tony Kong
- - Benjamin Hwang
- - Kevin Wong
  - James Yoo
+ - Kevin Wong
+ - Tony Kong
+ - Raymond Situ
+ - Benjamin Hwang
 
 Team Member Student IDs:
  - 10639152
  - 28353150
  - 47078150
+ - 21333159
 
 Team Member ugrad.cs.ubc.ca Logins:
  - l4k0b
  - b2j0b
  - y2k0b
+ - r7p0b
 
 Initial level commitment (80%, 90%, or 100%): TODO
 
