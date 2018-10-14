@@ -7,9 +7,11 @@ Team Member Names:
 
 Team Member Student IDs:
  - 10639152
+ - 28353150
 
 Team Member ugrad.cs.ubc.ca Logins:
  - l4k0b
+ - b2j0b
 
 Initial level commitment (80%, 90%, or 100%): TODO
 
