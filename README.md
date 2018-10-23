@@ -13,4 +13,4 @@
 
 * [Identifying Crosscutting Concerns Using Fan-in Analysis](https://arxiv.org/pdf/cs/0609147.pdf)
 
-*[Measuring Cohesion](https://github.com/yegor256/jpeek/blob/master/README.md?fbclid=IwAR0Od0orLA-ooQgWnU5lIdabo71_RgbGn7jkZpUvplLHRx3H2gNuF2PQ7fk)
+* [Measuring Cohesion](https://github.com/yegor256/jpeek/blob/master/README.md?fbclid=IwAR0Od0orLA-ooQgWnU5lIdabo71_RgbGn7jkZpUvplLHRx3H2gNuF2PQ7fk)
