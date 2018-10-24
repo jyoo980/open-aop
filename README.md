@@ -9,6 +9,8 @@
 
 * [Identifying, Assigning, and Quantifying Crosscutting Concerns](http://www.cs.columbia.edu/~eaddy/publications/Identifying,%20Assigning,%20and%20Quantifying%20Crosscutting%20Concerns.pdf)
 
+* [Getting Started with AspectJ](https://www.eclipse.org/aspectj/doc/next/progguide/printable.html#starting)
+
 * [Aspect Oriented Programming](https://www.cs.ubc.ca/~gregor/papers/kiczales-ECOOP1997-AOP.pdf)
 
 * [Identifying Crosscutting Concerns Using Fan-in Analysis](https://arxiv.org/pdf/cs/0609147.pdf)
