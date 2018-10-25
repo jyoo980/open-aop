@@ -12,3 +12,11 @@
 * [Aspect Oriented Programming](https://www.cs.ubc.ca/~gregor/papers/kiczales-ECOOP1997-AOP.pdf)
 
 * [Identifying Crosscutting Concerns Using Fan-in Analysis](https://arxiv.org/pdf/cs/0609147.pdf)
+
+* [Measuring Cohesion](https://github.com/yegor256/jpeek/blob/master/README.md?fbclid=IwAR0Od0orLA-ooQgWnU5lIdabo71_RgbGn7jkZpUvplLHRx3H2gNuF2PQ7fk)
+
+
+## AspectJ Specific Resources
+
+* [Getting Started with AspectJ](https://www.eclipse.org/aspectj/doc/next/progguide/printable.html#starting)
+* [Intro to AspectJ](https://www.baeldung.com/aspect)
