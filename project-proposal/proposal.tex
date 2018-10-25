@@ -13,7 +13,7 @@
 
 
 \begin{document}
-\title{Proposal \protect\\ Open AOP: Analysing Cross-Cutting Concerns \protect\\ in Open Source Software}
+\title{OpenAOP: Analysing Cross-Cutting Concerns in \protect\\ Open Source Software}
 
 \author{Tony Kong}
 \affiliation{%
@@ -56,11 +56,85 @@
 \email{l4k0b@ugrad.cs.ubc.ca}
 
 \begin{abstract}
-Aspect-oriented Programming is a technique for improving the modularity of a system by via a construct called an Aspect, which encapsulates the cross-cutting concerns and enforces a separation of concerns between business and application logic. In \textit{Open AOP}, we analyze a number of open-source Java software systems, measure the extent of cross-cutting extant prior to refactoring using AspectJ. We then analyze the evolved system, paying particular attention to cross-cutting, coupling, and cohesion.  
+Aspect-oriented Programming is a technique for improving the modularity of a system via the \textit{Aspect}, which encapsulates the cross-cutting concerns and enforces a separation of concerns between business and application logic. In \textit{Open AOP}, we analyze an open-source Java software system, measure the extent of cross-cutting as well as the overall cohesion of the system prior to refactoring using AspectJ. We then analyze the evolved system, with respect to cross-cutting and cohesion.
 \end{abstract}
 
-\keywords{Aspect-oriented Programming, Cross-cutting concern, Joinpoint, Pointcut, Advice, Open-source}
+\keywords{Aspect-oriented Programming, Cross-cutting concern, Joinpoint, Pointcut, Advice, Tangling, Cohesion, AspectJ}
 \maketitle
 
-\end{document}
+\section{Motivation}
+Modern software systems are extremely complex and often require large amounts of logic which may be unrelated to its core concerns. Classical examples of this include logging and exception handling. When these cross-cutting concerns are scattered throughout modules, we call it \textit{tangled}. A consequence of tangling is that the cohesion of tangled modules. As a result, the system becomes more difficult to reason about and evolve.
 
+\section{Methodology}
+\begin{enumerate}
+    \item Select a medium-sized \footnote{\leq 6000 \text{ SLOC}} open-source project and extract the following metrics.
+    \begin{itemize}
+    \item Degree of crosscutting \footnote{1 Murphy et al: Identifying, Assigning, and Quantifying Crosscutting Concerns}
+    \item Cohesion
+\end{itemize}
+    \item With these metrics in place, we will refactor the project using AspectJ
+    \item We revisit the metrics we extracted in (1)
+\end{enumerate}
+
+\section{High Level Objectives}
+Our primary goals for this project are as follows
+\begin{enumerate}
+    \item Refactor an open-source software system using AspectJ
+    \item Compare and contrast the degree of crosscutting and cohesion present in the prior system to that of the evolved system
+\end{enumerate}
+
+Successful completion of the objectives above would map to the 100\% project completion milestone.
+
+\section{Project Milestone Outline}
+Although we have committed to the 100\% completion goal, below we detail a high-level overview of what our project would look like at different levels of completion
+
+\subsection{80\% Completion}
+For this milestone, we expect each member to be comfortable with the following
+\begin{enumerate}
+    \item Identify a cross-cutting concern in the context of AOP
+    \item Write an AspectJ aspect to address the concern above
+\end{enumerate}
+This would be achieved by consulting the literature in our weekly meetings and each member "owning" a single facet of AspectJ and teaching others. Using the competencies above, we would perform a static analysis of a very small Java software system and generate a report on the cross-cutting concerns existent in it, and \textit{how} AspectJ could be utilized to mitigate them.
+
+\subsection{90\% Completion}
+This milestone assumes that all group members are comfortable with the competencies outlined in \textbf{4.1}, but takes it further by
+\begin{enumerate}
+    \item Writing a small-scale software system (e.g. small game, some tool) in Java
+    \item Evolving said system by introducing aspects via AspectJ
+    \item Comparing the evolved system with the prior system
+\end{enumerate}
+
+\subsection{100\% Completion}
+This milestone is similar to the 90\% milestone, but applied to an open-source software system in a larger scale. We expect this to be significantly more challenging than the 90\% target due to the fact that not only do we have to learn AspectJ, but we also have to become familiar enough with a foreign system to refactor and evolve the system appropriately.
+
+\subsection{Poster}
+This is the part of the project which other CPSC311 classmates will have the most exposure to. Therefore, we plan to take a high-level approach to describing AspectJ. We will detail the primary language features of AspectJ, such as the \textit{Aspect}, \textit{Pointcut}, \textit{Joinpoint}, and the different types of \textit{Advice} made possible. In addition to the features above, we will also enumerate some common cross-cutting concerns which are targeted by AspectJ, and provide a simple demo of AspectJ in action using an IDE.
+\section{Select References}
+
+This section details a few sources which we will utilize as a "jumping-point" for our project. Note that these are not the complete set of sources which we will consult, but are a subset which are especially appropriate for getting familiar with AspectJ and AOP.
+
+\begin{enumerate}
+    \item Eclipse Foundation: \textit{Getting Started with AspectJ}
+\end{enumerate}
+This is a webpage which contains some key information about the AspectJ language, containing information about Pointcuts, Joinpoints, and the different types of Advice which are available as part of the language. It is especially appropriate as a primary language specification due to the fact that the Eclipse foundation is strongly associated with AspectJ.
+
+\begin{enumerate}
+    \item Kiselev, Ivan: \textit{Aspect-Oriented Programming with AspectJ}
+\end{enumerate}
+This is a book which is accessible to people with a general knowledge of the Java programming language. It eases readers into AspectJ with concrete code examples which are small enough to be written into an IDE at the same time.
+
+\begin{enumerate}
+    \item Murphy et al: \textit{Identifying, Assigning, and Quantifying Cross-cutting Concerns}
+\end{enumerate}
+This paper will deal with researching how we can measure the amount of cross-cutting which is present in a system. This is important as we will require a metric in order to measure the efficacy of AspectJ in mitigating cross-cutting.
+
+\section{Citations}
+\begin{enumerate}
+    \item Murphy et al: \textit{Identifying, Assigning, and Quantifying Crosscutting Concerns}
+    \item Baeldung, Intro to AspectJ: \textit{https://www.baeldung.com/aspectj}
+    \item Eclipse Foundation: \textit{Getting Started with AspectJ}
+    \item Kiselev, Ivan: \textit{Aspect-Oriented Programming with AspectJ}
+    \item o7planning, Java Aspect Oriented Programming Tutorial: \textit{goo.gl/BDVAEk}
+\end{enumerate}
+
+\end{document}
