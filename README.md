@@ -2,7 +2,8 @@
 
 ## Project Proposal Resources
 
-* [Overleaf LaTeX](https://www.overleaf.com/9467977967pcgmsrkbgqrj)
+* [Project Proposal - Overleaf](https://www.overleaf.com/9467977967pcgmsrkbgqrj)
+* [Background Report - Overleaf](https://www.overleaf.com/8332162348kfskrnmfqfzf)
 * [Google Doc](https://docs.google.com/document/d/1rFCMW2vnKIRutKe1yA6haAVkJbFJ9Fw7caOVyUC5fRg/edit?usp=sharing) 
 
 ## Citations + Sources
