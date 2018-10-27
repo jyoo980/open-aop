@@ -1,5 +1,5 @@
 \documentclass[sigconf]{acmart}
-
+\usepackage{graphicx}
 \usepackage{booktabs} % For formal tables
 
 
@@ -65,8 +65,8 @@
 
 \begin{abstract}
 This paper details AspectJ, a general-purpose Aspect-oriented programming language built on top of Java. We explore AspectJ's mechanisms that enable software developers to encapsulate cross-cutting concerns. We also detail how the language allows developers to better reason about their systems by enforcing a separation of concerns between business logic and cross-cutting logic.
-
 \end{abstract}
+
 \begin{CCSXML}
 <ccs2012>
 <concept>
@@ -79,9 +79,31 @@ This paper details AspectJ, a general-purpose Aspect-oriented programming langua
 \ccsdesc[300]{Software and its engineering~Frameworks}
 
 \keywords{AspectJ, Aspect-oriented Programming, Pointcut, Joinpoint, Advice, Cross-cutting concern, application logic, business logic}
-
-
 \maketitle
+
+\section{Overview}
+The average size of a software system is growing each year. As technology takes a more central role in the lives of many people around the world, software becomes to permeate many aspects of life. Analogous to this growth is the inevitability logic being included in a system which is required to fulfill application logic as opposed to business logic. Application logic may range from simple behaviour like logging, to more complex components such as security implementations and exception handling. At its core, application logic relates more to the infrastructure of a system as opposed to what the system should aim to fulfill, or its business requirements. 
+\\
+\\
+When unrelated logic becomes scattered throughout a program, we see an evolution of that logic into a cross-cutting concern. We say that it is cross-cutting because it cuts across multiple components of a program without belonging to any single one of them. This permeation of cross-cutting concerns in a system becomes problematic for many reasons, two of which I will highlight below due to their relevance to our project
+\begin{enumerate}
+    \item Program cohesion decreases
+    \item Encapsulation of cross-cutting concerns becomes more important
+\end{enumerate}
+AspectJ addresses the two issues above by providing a mechanism to encapsulate cross-cutting concerns, and an even more powerful mechanism that enables developers to specify what behaviour program should have when handling these concerns.
+
+\section{The Language}
+\subsection{Introduction}
+AspectJ can be thought of as an extension to the Java programming language. This does not mean, however, that it is TODO
+
+\begin{figure}
+    \centering
+    \includegraphics[width=8cm]{cross-cutting-concern-diagram.png}}
+    \caption{concerns in a software system}
+    \label{fig:1}
+\end{figure}
+
+
 
 \end{document}
 
