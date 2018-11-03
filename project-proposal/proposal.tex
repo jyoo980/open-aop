@@ -79,8 +79,8 @@ Modern software systems are extremely complex and often require large amounts of
 \section{Project Type}
 We understand that our project type is rather unique in the sense that it is a blend of two of the classical types presented in CPSC 311, namely
 \begin{enumerate}
-    \item Applying an existing, interesting analysis (static or dynamic) to a substantial program and illustrating the value of the analysis.
-    \item Creating a substantial program in a potentially useful but esoteric (i.e., "weird" and ideally cutting-edge) language that you have not already studied. Your program should illustrate the particular value of the language.
+    \item \textbf{Type 3}: Applying an existing, interesting analysis (static or dynamic) to a substantial program and illustrating the value of the analysis.
+    \item \textbf{Type 4}: Creating a substantial program in a potentially useful but esoteric (i.e., "weird" and ideally cutting-edge) language that you have not already studied. Your program should illustrate the particular value of the language.
 \end{enumerate}
 We would fulfill (1) by using the methodology of \textit{Murphy et al} to measure how much of a program's concerns are indeed cross-cutting - this would be a static analysis of the program we would chose to refactor using AspectJ. This leads us to how our project would fulfill (2). Reafactoring/creating a program with AspectJ would be a non-trivial task, especially as none of us have worked extensively with the language. We would illustrate the value of AOP by introducing Aspects in our program which enable the encapsulation of cross-cutting concerns.
 
@@ -119,8 +119,20 @@ This milestone assumes that all group members are comfortable with the competenc
     \item Comparing the evolved system with the prior system
 \end{enumerate}
 
+The 90\% completion project will fulfill the following
+\begin{enumerate}
+    \item Includes at least 4 cross-cutting concerns handled by AspectJ
+    \item Should be demoable via computer
+    \item Could be an implementation of a simple Java program, e.g. Space Invaders
+\end{enumerate}
+
 \subsection{100\% Completion}
-This milestone is similar to the 90\% milestone, but applied to an open-source software system in a larger scale. We expect this to be significantly more challenging than the 90\% target due to the fact that not only do we have to learn AspectJ, but we also have to become familiar enough with a foreign system to refactor and evolve the system appropriately.
+This milestone is similar to the 90\% milestone, but applied to an open-source software system in a larger scale. We expect this to be significantly more challenging than the 90\% target due to the fact that not only do we have to learn AspectJ, but we also have to become familiar enough with a foreign system to refactor and evolve the system appropriately. The 100\% completion project will fulfill the following requirements
+\begin{enumerate}
+    \item Contains at least 1 cross cutting concern that is not logging or exception handling
+    \item Should be a refactoring performed on a system which is at most 5000 lines of code
+    \item Contains few dependencies for easy set up on development machines
+\end{enumerate}
 
 \subsection{Poster}
 This is the part of the project which other CPSC311 classmates will have the most exposure to. Therefore, we plan to take a high-level approach to describing AspectJ. We will detail the primary language features of AspectJ, such as the \textit{Aspect}, \textit{Pointcut}, \textit{Joinpoint}, and the different types of \textit{Advice} made possible. In addition to the features above, we will also enumerate some common cross-cutting concerns which are targeted by AspectJ, and provide a simple demo of AspectJ in action using an IDE. Below are some specific details regarding our poster and its presentation
@@ -161,5 +173,6 @@ Finland. Springer-Verlag LNCS 1241. June 1997
 \end{enumerate}
 
 \end{document}
+
 
 
