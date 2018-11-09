@@ -99,7 +99,7 @@ When unrelated logic becomes scattered throughout a program, we see an evolution
     \label{fig:1}
 \end{figure}
 
-AspectJ addresses the two issues above by providing a mechanism to encapsulate cross-cutting concerns, and an even more powerful mechanism that enables developers to specify what behaviour program should have when handling these concerns.
+AspectJ addresses the two issues above by providing a mechanism to encapsulate cross-cutting concerns, and an even more powerful mechanism that enables developers to specify what behaviour programs should have when handling these concerns.
 
 \section{The Language}
 \subsection{Introduction}
@@ -154,13 +154,13 @@ Looking back at \verb InstantiationAspect, we have the statement
 \end{verbatim}
 This is an example of the type \verb Pointcut . Generally, a pointcut is an aspect's way of encapsulating a certain execution point. In this case, the pointcut \verb new_exec()  represents the point(s) in a program where a constructor is executed. This facility for encapsulating points in a program's execution is remarkably powerful, but its true usefulness is enabled by advice. \\
 \\
-Advice in AspectJ compactly described in the informal EBNF below
+Advice in AspectJ is compactly described in the informal EBNF below
 \begin{verbatim}
     <Advice> ::= <Before>
                | <After>
                | <Around>
 \end{verbatim}
-advice can be combined with pointcuts to dictate the runtime behaviour of a system at a certain point in time. This is exactly what happens in \verb InstantiationAspect  
+Advice can be combined with pointcuts to dictate the runtime behaviour of a system at a certain point in time. This is exactly what happens in \verb InstantiationAspect  
 \begin{verbatim}
     before(): new_call() {
         count++;
@@ -179,7 +179,7 @@ The JoinPoint is a crucial entity of AspectJ and Aspect-Oriented Programming in 
     \label{fig:2}
 \end{figure}
 
-Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of join points enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be tfhe update logic for the observer design pattern. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
+Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of join points enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be the update logic for the observer design pattern \cite{google-aop}. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
 \begin{verbatim}
     public setXPoint(int x) {
         this.x = x;
@@ -342,7 +342,7 @@ At a basic level, we declare \verb before  like so
  We arrive at a rather serious problem. The developer is no longer able to reason about the dynamic behaviour of withdraw just by performing a static read-through of the method itself. It is now \textit{much} easier for the developer to misunderstand what this method is truly doing without looking at both the method itself, and its related aspect.
  \\
  \\
- This means that reasoning about the nature a program statically falls prey to a high level of indirection - a developer now has to consider both a system \textit{and} its aspects as separate but interweaved entities when attempting to understand it. This becomes even more problematic when AOP is applied to even larger systems with a large number of distinct aspects.
+ This means that reasoning about the nature of a program statically falls prey to a high level of indirection - a developer now has to consider both a system \textit{and} its aspects as separate but interweaved entities when attempting to understand it. This becomes even more problematic when AOP is applied to even larger systems with a large number of distinct aspects.
  
  \section{Project Overview}
  Having discussed the AspectJ language and its features in detail, we may now explore how we are going to utilize it in our final project. Below is a high-level overview of the issue we will attempt to solve with AspectJ and aspect-oriented programming.
@@ -440,6 +440,11 @@ Baeldung, accessed: 2018/11/06
 Murphy et al, 2007: 
 \textit{Identifying, Assigning, and Quantifying Crosscutting Concerns}
 Proceedings of the First International Workshop on Assessment of Contemporary Modularization Techniques
+
+\bibitem{google-aop}
+Kiczales, Gregor:
+\textit{Aspect Oriented Programming: Radical Research in Modularity}
+Google Tech Talks, YouTube: https://www.youtube.com/watch?v=cq7wpLI0hco
 \end{thebibliography}
 
 
