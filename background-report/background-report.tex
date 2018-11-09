@@ -170,7 +170,7 @@ Advice can be combined with Pointcuts to dictate the runtime behaviour of a syst
 This advice will execute the system print statement before each point in the program which matches the pointcut \verb new_call(). Other types of Advice will be discussed later. With this brief overview of the Aspect, we are now able to understand \verb InstantiationAspect.  If we wanted to enable the same behaviour in a program without AspectJ; it would be difficult - one possible implementation may require a global counter and a increment of this counter after \textit{all} calls to \verb new.  This is certainly not an example of evolvable software design, and may not even be feasible for large systems.
 
 \subsection{Joinpoints}
-The JoinPoint is a crucial entity of AspectJ and Aspect-Oriented Programming in the sense that it enables a sytematic categorization of some points of a program's execution. Formally, a join point is a "well-defined point in the execution of a program." \cite{LangDeats}. The keyword here is \textit{well-defined} - without formally defining which points are in a program are valid/invalid join points, it would be extremely difficult for a developer to understand and reason about an Aspect-oriented system \cite{aop-ECCOP}. Figure 2 details the join points which are enabled by AspectJ.
+The JoinPoint is a crucial entity of AspectJ and Aspect-Oriented Programming in the sense that it enables a sytematic categorization of some points of a program's execution. Formally, a join point is a "well-defined point in the execution of a program." \cite{LangDeats-joinpoints}. The keyword here is \textit{well-defined} - without formally defining which points are in a program are valid/invalid join points, it would be extremely difficult for a developer to understand and reason about an Aspect-oriented system \cite{aop-ECCOP}. Figure 2 details the join points which are enabled by AspectJ.
 
 \begin{figure}
     \centering
@@ -195,7 +195,7 @@ This represents Pointcuts of the form
 \begin{verbatim}
     call(MethodPattern)
 \end{verbatim}
-The EBNF describing \verb MethodPattern  \cite{LangDeats} is much too large to include here, so we show a number of examples instead. This Pointcut represents when a method is called in a program. For example, the following pointcut declaration will match calls to any methods in class \verb Main  which return something of type \verb int
+The EBNF describing \verb MethodPattern  \cite{LangDeats-pointcut} is much too large to include here, so we show a number of examples instead. This Pointcut represents when a method is called in a program. For example, the following pointcut declaration will match calls to any methods in class \verb Main  which return something of type \verb int
 \begin{verbatim}
     pointcut any_main_call(): call(int Main.*(..));
 \end{verbatim}
@@ -403,9 +403,25 @@ The Eclipse Foundation
 \\\texttt{https://www.eclipse.org/aspectj/}
 
 \bibitem{LangDeats}
-The Eclipse Foundation
+AspectJ - The Aspect, The Eclipse Foundation
 \textit{Appendix B. Language Semantics}. 
 \\\texttt{https://www.eclipse.org/aspectj/doc/next/progguide/semantics-aspects.html}
+
+
+\bibitem{LangDeats-Advice}
+AspectJ - Advice, The Eclipse Foundation
+\textit{Advice, Appendix B. Language Semantics}. 
+\\\texttt{https://www.eclipse.org/aspectj/doc/next/progguide/semantics-advice.html}
+
+\bibitem{LangDeats-joinpoints}
+AspectJ - Join Points, The Eclipse Foundation
+\textit{Join Points, Appendix B. Language Semantics}. 
+\\\texttt{https://www.eclipse.org/aspectj/doc/next/progguide/joinPoints.html}
+
+\bibitem{LangDeats-pointcut}
+AspectJ - Pointcuts, The Eclipse Foundation
+\textit{Pointcuts, Appendix B. Language Semantics}. 
+\\\texttt{https://www.eclipse.org/aspectj/doc/next/progguide/pointcuts.html}
 
 \bibitem{aop-ECCOP}
 Kiczales et al, 1997: 
