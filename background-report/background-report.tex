@@ -114,8 +114,8 @@ where \verb <id>  is some valid identifier name in the AspectJ language. Note th
 \begin{verbatim}
     class <id> { ... }
 \end{verbatim}
-Although similar in syntax to how one would declare a class in Java, this is where Java classes and AspectJ aspects begin to diverge. An aspect may contain entities of type  \verb Pointcut  and \verb Advice , these types are unique to AspectJ and will be explored later in this section. We explore the aspect \verb InstantiationAspect   below
-
+Although similar in syntax to how one would declare a class in Java, this is where Java classes and AspectJ aspects begin to diverge. An aspect may contain entities of type  \verb Pointcut  and \verb Advice , these types are unique to AspectJ and will be explored later in this section. We explore the aspect \verb InstantiationAspect below
+%
 \begin{verbatim}
     aspect InstantiationAspect {
         int count = 0;
@@ -128,7 +128,7 @@ Although similar in syntax to how one would declare a class in Java, this is whe
         }
     }
 \end{verbatim}
-
+%
 We first highlight the main differences between a class and an aspect.
 \begin{enumerate}
     \item An aspect cannot be directly instantiated \cite{LangDeats}
@@ -148,8 +148,7 @@ in Java. Once you declare an aspect, the logic you declare inside of it will exe
     \item Aspects may extend classes and implement interfaces (note that this does \textit{not} enable aspects to be instantiated. \cite{LangDeats}
     \item Aspects may extend other Aspects
 \end{enumerate}
-
-Looking back \verb InstantiationAspect, we have the statement
+Looking back at \verb InstantiationAspect, we have the statement
 \begin{verbatim}
     pointcut new_exec(): execution(new(..));
 \end{verbatim}
@@ -171,26 +170,26 @@ Advice can be combined with Pointcuts to dictate the runtime behaviour of a syst
 This advice will execute the system print statement before each point in the program which matches the pointcut \verb new_call(). Other types of Advice will be discussed later. With this brief overview of the Aspect, we are now able to understand \verb InstantiationAspect.  If we wanted to enable the same behaviour in a program without AspectJ; it would be difficult - one possible implementation may require a global counter and a increment of this counter after \textit{all} calls to \verb new.  This is certainly not an example of evolvable software design, and may not even be feasible for large systems.
 
 \subsection{Joinpoints}
-The Joinpoint is a crucial entity of AspectJ and Aspect-Oriented Programming in the sense that it enables a sytematic categorization of some points of a program's execution. Formally, a Joinpoint is a "well-defined point in the execution of a program." \cite{LangDeats}. The keyword here is \textit{well-defined} - without formally defining which points are in a program are valid/invalid joinpoints, it would be extremely difficult for a developer to understand and reason about an Aspect-oriented system \cite{aop-ECCOP}. Figure 2 details the joinpoints which are enabled by AspectJ.
+The JoinPoint is a crucial entity of AspectJ and Aspect-Oriented Programming in the sense that it enables a sytematic categorization of some points of a program's execution. Formally, a join point is a "well-defined point in the execution of a program." \cite{LangDeats}. The keyword here is \textit{well-defined} - without formally defining which points are in a program are valid/invalid join points, it would be extremely difficult for a developer to understand and reason about an Aspect-oriented system \cite{aop-ECCOP}. Figure 2 details the join points which are enabled by AspectJ.
 
 \begin{figure}
     \centering
     \includegraphics[width=8cm]{joinpoints.png}
-    \caption{available AspectJ Joinpoints}
+    \caption{available AspectJ join points}
     \label{fig:2}
 \end{figure}
 
-Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of joinpoints enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be the update logic for the observer design pattern. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
+Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of join points enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be tfhe update logic for the observer design pattern. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
 \begin{verbatim}
     public setXPoint(int x) {
         this.x = x;
         this.update();
     }
 \end{verbatim}
-The call to \verb this.update()  is a cross-cutting concern. With AspectJ, a developer could target \verb setXPoint  as an instance of a \textit{method execution} or \textit{field assignment} joinpoint. This enables the developer to formally define points in a program where they could then encapsulate in pointcuts, which will then be used to specify when Advice in a system will be executed. This will be explored later. 
+The call to \verb this.update()  is a cross-cutting concern. With AspectJ, a developer could target \verb setXPoint  as an instance of a \textit{method execution} or \textit{field assignment} join point. This enables the developer to formally define points in a program where they could then encapsulate in pointcuts, which will then be used to specify when Advice in a system will be executed. This will be explored later. 
 
 \subsection{Pointcuts}
-While the Joinpoint enables the developer to reason about points in program execution where Advice could be possibly applied, Pointcuts are points in the program where Advice \textit{will} be applied. One can think of Pointcuts as being a subset of Joinpoints in a program. To construct a Pointcut, the developer also provides a predicate expression that Join points in the execution flow can match against. These predicate expressions contain signature patterns that are intended to describe the type of Join points a Pointcut matches against. Signature patterns can describe things such as a methods name, the return type of a method, the type of arguments it takes, the number of arguments it takes, and more. AspectJ has support for more than 10 Pointcuts, we will discuss only a few here.
+While the join point enables the developer to reason about points in program execution where Advice could be possibly applied, pointcuts are points in the program where Advice \textit{will} be applied. One can think of pointcuts as being a subset of join points in a program. To construct a pointcut, the developer also provides a predicate expression that Join points in the execution flow can match against. These predicate expressions contain signature patterns that are intended to describe the type of Join points a pointcut matches against. Signature patterns can describe things such as a methods name, the return type of a method, the type of arguments it takes, the number of arguments it takes, and more. AspectJ has support for more than 10 pointcuts, we will discuss only a few here.
 \subsection{Method Call and Execution}
 This represents Pointcuts of the form
 \begin{verbatim}
@@ -228,13 +227,13 @@ The set of pointcuts below are \textit{extremely} powerful facilities that Aspec
 \end{verbatim}
 With the \verb null_handler  pointcut, we effectively perform a match on the code in the class \verb Main  which handles exceptions of type \verb NullPointerException.
 \subsection{Advice}
-With some basic background in the Aspect, Joinpoint, and Pointcut, we now arrive at \textit{Advice}. Without Advice, there would be nothing determining how our code runs at every joinpoint selected by a pointcut. Therefore, we use Advice to communicate exactly how the code should execute and run to address the cross-cutting concern. We return to the informal EBNF describing the types of Advice enabled by AspectJ
+With some basic background in the Aspect, Joinpoint, and Pointcut, we now arrive at \textit{Advice}. Without Advice, there would be nothing determining how our code runs at every join point selected by a pointcut. Therefore, we use Advice to communicate exactly how the code should execute and run to address the cross-cutting concern. We return to the informal EBNF describing the types of Advice enabled by AspectJ
 \begin{verbatim}
     <Advice> ::= <Before>
                | <Around>
                | <After>
 \end{verbatim}
-From this EBNF, we see that there are three types of Advice:  \verb Before,  \verb Around,  and \verb After.  At a high level, \verb Before  will execute code \textit{before}, \verb After  will execute code \textit{after}, and \verb Around  will execute code \textit{around} a selected Pointcut. These three types of Advice are explored in the following sections.
+From this EBNF, we see that there are three types of Advice:  \verb Before,  \verb Around,  and \verb After.  At a high level, \verb Before  will execute code \textit{before}, \verb After  will execute code \textit{after}, and \verb Around  will execute code \textit{around} a selected pointcut. These three types of Advice are explored in the following sections.
 
 \subsection{Before}
 At a basic level, we declare \verb before  like so
@@ -282,7 +281,7 @@ At a basic level, we declare \verb before  like so
         }
      }
  \end{verbatim}
- This is an example of a cross-cutting concern which is an ideal candidate for refactoring using \verb around , since they represent calls which will happen in pairs which close the \verb concurrent_access  joinpoint between themselves. We refactor \verb MutexAspect  to make use of \verb around  like so
+ This is an example of a cross-cutting concern which is an ideal candidate for refactoring using \verb around , since they represent calls which will happen in pairs which close the \verb concurrent_access  join point between themselves. We refactor \verb MutexAspect  to make use of \verb around  like so
  \begin{verbatim}
     void around(): concurrent_access() {
         mutex.lock();
@@ -348,7 +347,7 @@ At a basic level, we declare \verb before  like so
  \section{Project Overview}
  Having discussed the AspectJ language and its features in detail, we may now explore how we are going to utilize it in our final project. Below is a high-level overview of the issue we will attempt to solve with AspectJ and aspect-oriented programming.
  \subsection{The Problem}
- Consider the system that is described \textit{figure 3}. We have a concern, $\lambda$ which is scattered throughout a number of classes. We describe $\lambda$ as \textit{cross-cutting}, since it cuts across multiple modules of the system. This is a common situation in modern software systems. In fact, application logic such as logging, and exception handling \cite{aop-ECCOP} appear extremely often in most software systems, and are prime examples of cross-cutting concerns.
+ Consider the system that is described in \textit{figure 3}. We have a concern, $\lambda$ which is scattered throughout a number of classes. We describe $\lambda$ as \textit{cross-cutting}, since it cuts across multiple modules of the system. This is a common situation in modern software systems. In fact, application logic such as logging, and exception handling \cite{aop-ECCOP} appear extremely often in most software systems, and are prime examples of cross-cutting concerns.
 
 \subsection{A Proposed Solution}
 To tackle the problem of \textit{crosscutting}, we will apply Aspect-oriented programming principles to a system via AspectJ. Eventually transforming the system described in \textit{figure 3} to a system represented by \textit{figure 4}. We will accomplish this transformation by refactoring a system using AspectJ. Specifically, we will perform the following refactorings
@@ -358,7 +357,7 @@ To tackle the problem of \textit{crosscutting}, we will apply Aspect-oriented pr
 These will be measured using metrics such as \textit{concentration} \cite{murphy} and others developed by Murphy et al.
 \begin{enumerate}[resume]
     \item Create aspects to capture the concerns identified in (1)
-    \item Declare pointcuts to capture joinpoints where cross-cutting logic appears.
+    \item Declare pointcuts to capture join points where cross-cutting logic appears.
     \item Declare advice to execute the handling of each pointcut.
 \end{enumerate}
 Parts (2) to (4) will be the critical focus of the project, requiring us to demonstrate a strong command of the newly introduced AspectJ language constructs and the aspect-oriented programming paradigm.
@@ -393,7 +392,7 @@ In our results, we also plan to highlight the limitations of AspectJ as previous
  \begin{figure}
     \centering
     \includegraphics[width=8cm]{scatter-refactor.png}
-    \caption{A system with an encapsulated cross-cutting concern}
+    \caption{system with an encapsulated cross-cutting concern}
     \label{fig:1}
 \end{figure}
 
