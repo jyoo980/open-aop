@@ -230,7 +230,7 @@ The set of pointcuts below are \textit{extremely} powerful facilities that Aspec
     pointcut null_handler():
         within(Main) && handler(NullPointerException);
 \end{verbatim}
-With the \verb null_handler  pointcut, we effectively perform a match on the code in the class \verb Main  which handles exceptions of type \verb NullPointerException.
+With the \verb null_handler  pointcut, we effectively perform a match on the code in the class \verb Main  which handles exceptions of type \verb NullPointerException. It is important to note that \verb within  is not specific only to exception handling. It is a remarkably versatile construct which allows a finer, more focused level of granularity when picking out pointcuts from a large number of joinpoints. For example, we could have a pointcut which matches a large number of joinpoints in class \verb A  and \verb B. In this specific instance, a developer can match a subset of the joinpoints by specifying either  \verb within(A)  or \verb within(B)  to match only the joinpoints residing in those specific classes.
 \subsection{Advice}
 With some basic background in the Aspect, Joinpoint, and Pointcut, we now arrive at \textit{Advice}. Without advice, there would be nothing determining how our code runs at every join point selected by a pointcut. Therefore, we use advice to communicate exactly how the code should execute and run to address the cross-cutting concern. We return to the informal EBNF describing the types of advice enabled by AspectJ
 \begin{verbatim}
