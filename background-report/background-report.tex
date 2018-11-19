@@ -217,7 +217,7 @@ The \verb composite  pointcut will match pointcuts which match the two previousl
 \begin{verbatim}
     execute(MethodPattern)
 \end{verbatim}
-and the circumstances during which the match will occur, method \textit{execution} vs method \textit{call}.
+and the circumstances during which the match will occur, method \textit{execution} vs method \textit{call}. There is a subtle but important difference between the \verb execute(..)  and the \verb call(..)  pointcut type. Although developers new to AspectJ may deem these pointcuts as the same, it is important to note that \verb execute(..)  will match when the \textit{body} of the \verb MethodPattern  described in execute is actually being run, whereas \verb call(..)  represents a point in time when the specific \verb MethodPattern  has been \textit{called}.
 
 \subsubsection{\textbf{Exception Handling (within and handler)}}
 The set of pointcuts below are \textit{extremely} powerful facilities that AspectJ provides with respect to exception handling
