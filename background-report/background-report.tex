@@ -148,7 +148,7 @@ As declaring \textit{and} creating an instance of an aspect, akin to the stateme
     class <id> { ... }
     <id> instance = new <id>(...);
 \end{verbatim}
-in Java. Once you declare an aspect, the logic you declare inside of it will execute as your program does without any additional work. Below are some of the similarities that aspects share with classes and the concepts it borrows from OOP
+in Java. Note that an aspect exists as a singleton instance in a program. Once you declare an aspect, the logic you declare inside of it will execute as your program does without any additional work. Below are some of the similarities that aspects share with classes and the concepts it borrows from OOP
 \begin{enumerate}
     \item Aspects may extend classes and implement interfaces (note that this does \textit{not} enable aspects to be instantiated. \cite{LangDeats}
     \item Aspects may extend other Aspects
@@ -206,7 +206,8 @@ The EBNF describing \verb MethodPattern  \cite{LangDeats-pointcut} is much too l
 \end{verbatim}
 We can of course have more complex \verb MethodPatterns. 
 \begin{verbatim}
-    pointcut example():	call(void com.ajexamples.*.foo(*));
+    pointcut example():	
+		call(void com.ajexamples.*.foo(*));
 \end{verbatim}
 This pointcut will match a call to a method called foo, which must return void, and is found in any class which is located in the package com.ajexamples. We also have a powerful way to 
 compose any number of pointcuts via logical operators. Like below
