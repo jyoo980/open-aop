@@ -2,6 +2,11 @@
 \usepackage{graphicx}
 \usepackage{booktabs} % For formal tables
 \usepackage{enumitem}
+\makeatletter
+\def\subsubsection{\@startsection{subsubsection}{3}{10pt}%
+                                 {-.5\baselineskip \@plus -2\p@ \@minus -.2\p@}%
+                 {3.5\p@}{\subsubsectionfont}}
+\makeatother
 
 
 % Copyright
@@ -86,7 +91,7 @@ This paper details AspectJ, a general-purpose Aspect-oriented programming langua
 The average size of a software system is growing each year. As technology takes a more central role in the lives of many people around the world, software begins to permeate across many aspects of life. Analogous to this growth is the inevitability that logic is being included in a system to fulfill application logic as opposed to business logic. Application logic may range from simple behaviour like logging, to more complex components such as security implementations and exception handling. At its core, application logic relates more to the infrastructure of a system as opposed to what the system should aim to fulfill, or its business requirements. 
 \\
 \\
-When unrelated logic becomes scattered throughout a program, we see an evolution of that logic into a cross-cutting concern. We say that it is cross-cutting because it cuts across multiple components of a program without belonging to any single one of them. This tangling \cite{aop-ECCOP} of cross-cutting concerns in a system becomes problematic for many reasons, two of which I will highlight below due to their relevance to our project
+When unrelated logic becomes scattered throughout a program, we see an evolution of that logic into a cross-cutting concern. We say that it is cross-cutting because it cuts across multiple components of a program without belonging to any single one of them. This tangling \cite{aop-ECCOP} of cross-cutting concerns in a system becomes problematic for many reasons, two of which we will highlight below due to their relevance to our project
 \begin{enumerate}
     \item Program cohesion decreases
     \item Encapsulation of cross-cutting concerns becomes more important
@@ -99,7 +104,7 @@ When unrelated logic becomes scattered throughout a program, we see an evolution
     \label{fig:1}
 \end{figure}
 
-AspectJ addresses the two issues above by providing a mechanism to encapsulate cross-cutting concerns, and an even more powerful mechanism that enables developers to specify what behaviour program should have when handling these concerns.
+AspectJ addresses the two issues above by providing a mechanism to encapsulate cross-cutting concerns, and an even more powerful mechanism that enables developers to specify what behaviour programs should have when handling these concerns.
 
 \section{The Language}
 \subsection{Introduction}
@@ -154,13 +159,13 @@ Looking back at \verb InstantiationAspect, we have the statement
 \end{verbatim}
 This is an example of the type \verb Pointcut . Generally, a pointcut is an aspect's way of encapsulating a certain execution point. In this case, the pointcut \verb new_exec()  represents the point(s) in a program where a constructor is executed. This facility for encapsulating points in a program's execution is remarkably powerful, but its true usefulness is enabled by advice. \\
 \\
-Advice in AspectJ compactly described in the informal EBNF below
+Advice in AspectJ is compactly described in the informal EBNF below
 \begin{verbatim}
     <Advice> ::= <Before>
                | <After>
                | <Around>
 \end{verbatim}
-advice can be combined with pointcuts to dictate the runtime behaviour of a system at a certain point in time. This is exactly what happens in \verb InstantiationAspect  
+Advice can be combined with pointcuts to dictate the runtime behaviour of a system at a certain point in time. This is exactly what happens in \verb InstantiationAspect  
 \begin{verbatim}
     before(): new_call() {
         count++;
@@ -179,7 +184,7 @@ The JoinPoint is a crucial entity of AspectJ and Aspect-Oriented Programming in 
     \label{fig:2}
 \end{figure}
 
-Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of join points enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be tfhe update logic for the observer design pattern. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
+Notice that we already saw an example of constructor execution in our \verb InstantiationAspect  with our pointcut \verb new_exec(). The wide variety of join points enable a developer to target a variety of points in their programs where they want to execute some cross-cutting code. A classic example would be the update logic for the observer design pattern \cite{google-aop}. If we had a GUI interface with some capability for drawing shapes, it is very well likely we could have some method such as 
 \begin{verbatim}
     public setXPoint(int x) {
         this.x = x;
@@ -190,7 +195,7 @@ The call to \verb this.update()  is a cross-cutting concern. With AspectJ, a dev
 
 \subsection{Pointcuts}
 While the join point enables the developer to reason about points in program execution where advice could be possibly applied, pointcuts are points in the program where advice \textit{will} be applied. One can think of pointcuts as being a subset of join points in a program. To construct a pointcut, the developer also provides a predicate expression that Join points in the execution flow can match against. These predicate expressions contain signature patterns that are intended to describe the type of Join points a pointcut matches against. Signature patterns can describe things such as a methods name, the return type of a method, the type of arguments it takes, the number of arguments it takes, and more. AspectJ has support for more than 10 pointcuts, we will discuss only a few here.
-\subsection{Method Call and Execution}
+\subsubsection{\textbf{Method Call and Execution}}
 This represents Pointcuts of the form
 \begin{verbatim}
     call(MethodPattern)
@@ -214,7 +219,7 @@ The \verb composite  pointcut will match pointcuts which match the two previousl
 \end{verbatim}
 and the circumstances during which the match will occur, method \textit{execution} vs method \textit{call}.
 
-\subsection{Exception Handling (within and handler)}
+\subsubsection{\textbf{Exception Handling (within and handler)}}
 The set of pointcuts below are \textit{extremely} powerful facilities that AspectJ provides with respect to exception handling
 \begin{verbatim}
     within(TypePattern)
@@ -235,7 +240,7 @@ With some basic background in the Aspect, Joinpoint, and Pointcut, we now arrive
 \end{verbatim}
 From this EBNF, we see that there are three types of advice:  \verb before,  \verb around,  and \verb after.  At a high level, \verb before  will execute code \textit{before}, \verb after  will execute code \textit{after}, and \verb around  will execute code \textit{around} a selected pointcut. These three types of advice are explored in the following sections.
 
-\subsection{Before}
+\subsubsection{\textbf{Before}}
 At a basic level, we declare \verb before  like so
 \begin{verbatim}
     before(): <Pointcut> { ... };
@@ -249,7 +254,7 @@ At a basic level, we declare \verb before  like so
  \end{verbatim}
  Applying this advice to the \verb concurrent_access  pointcut would enable developers to enforce a separation of concerns between the logic they are attempting to execute with the concurrent code, and the boilerplate logic they must execute at each invocation of said concurrent code. We have already seen an example of \verb before  in our \verb InstantiationAspect.
  
- \subsection{After}
+ \subsubsection{\textbf{After}}
  Similarly to \verb before, we declare \verb after  like so
  \begin{verbatim}
      after(): <Pointcut> { ... };
@@ -263,7 +268,7 @@ At a basic level, we declare \verb before  like so
  \end{verbatim}
  Notice that with the advice from the previous section, the developer is now capable of handling all mutex-based concurrency control mechanisms simply in the bodies of these aspects. This is a huge step in separating the concern of concurrency control, which would usually cut across multiple modules, from core business logic.
  
- \subsection{Around}
+ \subsubsection{\textbf{Around}}
  With \verb before  and \verb after  in place, we can now discuss the third, and arguably, most powerful type of advice - \verb around. We can declare an \verb around  advice like so
  \begin{verbatim}
      <TypePattern> around(): <Pointcut> { ... };
@@ -342,7 +347,7 @@ At a basic level, we declare \verb before  like so
  We arrive at a rather serious problem. The developer is no longer able to reason about the dynamic behaviour of withdraw just by performing a static read-through of the method itself. It is now \textit{much} easier for the developer to misunderstand what this method is truly doing without looking at both the method itself, and its related aspect.
  \\
  \\
- This means that reasoning about the nature a program statically falls prey to a high level of indirection - a developer now has to consider both a system \textit{and} its aspects as separate but interweaved entities when attempting to understand it. This becomes even more problematic when AOP is applied to even larger systems with a large number of distinct aspects.
+ This means that reasoning about the nature of a program statically falls prey to a high level of indirection - a developer now has to consider both a system \textit{and} its aspects as separate but interweaved entities when attempting to understand it. This becomes even more problematic when AOP is applied to even larger systems with a large number of distinct aspects.
  
  \section{Project Overview}
  Having discussed the AspectJ language and its features in detail, we may now explore how we are going to utilize it in our final project. Below is a high-level overview of the issue we will attempt to solve with AspectJ and aspect-oriented programming.
@@ -440,6 +445,11 @@ Baeldung, accessed: 2018/11/06
 Murphy et al, 2007: 
 \textit{Identifying, Assigning, and Quantifying Crosscutting Concerns}
 Proceedings of the First International Workshop on Assessment of Contemporary Modularization Techniques
+
+\bibitem{google-aop}
+Kiczales, Gregor:
+\textit{Aspect Oriented Programming: Radical Research in Modularity}
+Google Tech Talks, YouTube: https://www.youtube.com/watch?v=cq7wpLI0hco
 \end{thebibliography}
 
 
