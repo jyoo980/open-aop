@@ -386,6 +386,18 @@ We have three candidate open source projects.
 \end{enumerate}
 All three of our candidate projects have a large number of our target cross-cutting concerns, and are widely used. An analysis and refactor of any of our candidates will provide insight into the number of cross-cutting concerns in a developed system and highlight the positives and negatives of AspectJ.
 
+\subsection{The 100\% Project in Detail}
+If we were to accomplish 100\% of our project, we would chose to refactor Mockito using AspectJ. The reason for this is because of the fact that it is an industrial-grade open-source project with rich documentation, and because it contains the classical candidates for AspectJ's use cases. Examples include the large number of user-defined exceptions in the project, as well as the \verb MockitoSessionLogger  class which could be easily refactored into an Aspect.
+
+\subsection{The Target Project in Detail}
+We will refactor a smaller open source project \footnote{https://github.com/jyoo980/aop-spaceinvaders} which is an implementation of Space Invaders in Java. The reasons why we chose this project as opposed to the 100\% project are as follows
+\begin{enumerate}
+    \item Familiarity with the domain
+    \item Smaller, and manageable project size
+    \item Ease of setup for development
+\end{enumerate}
+Although we undertake a refactoring of a smaller project, it is important to note that we will still be leveraging AspectJ in the same way we would have done for the 100\% project. That is, we will mainly be targeting exception handling, logging, and in this case, display update logic with Aspects.
+
 \subsection{Anticipated Results}
 After we perform our refactor of the system using AspectJ, we expect that less concerns in the system will be crosscutting. We will investigate this hypothesis by re-analyzing the system with the same methods as previously described. 
 \\
