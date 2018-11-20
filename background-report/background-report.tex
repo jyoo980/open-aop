@@ -377,6 +377,15 @@ We will target application logic related to the following concerns in our select
 \end{enumerate}
 (1) and (2) are canonical examples of crosscutting concerns, and are exceptional candidates for modularization via aspects. (3) is particularly interesting because it covers a very wide range of possible conditions. It covers situations ranging from simple assertions on some values during program execution, to a completely different branch being taken depending on some previous validation. We expect this will make excellent use of the \verb around  advice.
 
+\subsection{Candidate Projects}
+We have three candidate open source projects.
+\begin{enumerate}
+    \item Mockito: https://github.com/mockito/mockito
+    \item Guava: https://github.com/google/guava
+    \item Intellij: https://github.com/JetBrains/intellij-community
+\end{enumerate}
+All three of our candidate projects have a large number of our target cross-cutting concerns, and are widely used. An analysis and refactor of any of our candidates will provide insight into the number of cross-cutting concerns in a developed system and highlight the positives and negatives of AspectJ.
+
 \subsection{Anticipated Results}
 After we perform our refactor of the system using AspectJ, we expect that less concerns in the system will be crosscutting. We will investigate this hypothesis by re-analyzing the system with the same methods as previously described. 
 \\
