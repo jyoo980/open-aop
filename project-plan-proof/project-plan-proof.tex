@@ -1,0 +1,89 @@
+\documentclass[sigconf]{acmart}
+\usepackage{graphicx}
+\usepackage{booktabs} % For formal tables
+\usepackage{enumitem}
+\makeatletter
+\def\subsubsection{\@startsection{subsubsection}{3}{10pt}%
+                                 {-.5\baselineskip \@plus -2\p@ \@minus -.2\p@}%
+                 {3.5\p@}{\subsubsectionfont}}
+\makeatother
+
+% Copyright
+\setcopyright{none}
+
+% DOI
+\acmDOI{10.475/123_4}
+
+% ISBN
+\acmISBN{123-4567-24-567/08/06}
+
+\acmConference[CPSC 311]{Intro. PL}{2018W1}{UBC Vancouver}
+\acmYear{2018}
+\copyrightyear{2018}
+
+\acmArticle{4}
+\acmPrice{15.00}
+
+\begin{document}
+\title{Project Plan/Proof-of-Concept:\\ Refactoring an Open-source System with AspectJ}
+
+\author{Tony Kong}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{y2k0b@ugrad.cs.ubc.ca}
+
+\author{Raymond Situ}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{r7p0b@ugrad.cs.ubc.ca}
+
+\author{Kevin Wong}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{b2j0b@ugrad.cs.ubc.ca}
+
+\author{Benjamin Hwang}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{r6o0b@ugrad.cs.ubc.ca}
+
+\author{James Yoo}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{l4k0b@ugrad.cs.ubc.ca}
+
+\begin{abstract}
+AspectJ is a powerful extension to the Java language which enables developers to apply a separation of concerns to a system with a high degree of crosscutting and scattering. This report details our refactoring of a small open-source project \footnote{https://github.com/jyoo980/aop-spaceinvaders} using AspectJ, and describes a possible approach to refactoring a larger-scale software system with the lessons learned and insights provided from our initial work.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10011006.10011008.10011024.10011038</concept_id>
+<concept_desc>Software and its engineering~Frameworks</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[300]{Software and its engineering~Frameworks}
+
+\keywords{Software evolution, refactoring, aspect-oriented programming}
+\maketitle
+
+\end{document}
+
