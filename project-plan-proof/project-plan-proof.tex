@@ -295,7 +295,7 @@ In this section, we use the software metric \textit{ Dedication (DEDI)} \cite{mu
 
 $$DEDI(t, s) = \frac{\text{SLOC in component t related to concern s}}{\text{SLOC in component t}}$$
 
-Where SLOC refers to \textit{Source Lines Of Code}. We will use this equation to reason about the effects of aspects in our software system. For the purposes of this POC, each component will be a method that is now advised by an aspect, and the concerns explored will be the ones mentioned in previous sections, that is: logging, exception handling, and score updating.
+Where SLOC refers to \textit{Source Lines Of Code}. This equation will the basis for our basic static anaylsis in reasoning about the effects of aspects in our system. For the purposes of this POC, each component will be a method that is now advised by an aspect, and the concerns explored will be the ones mentioned in previous sections, that is: logging, exception handling, and score updating.
 
 \subsubsection{\textbf{Logging}}
 We will look at a few methods (components) that are now advised by either of the aspects \verb InvadersLogger  or \verb ResourceLogger.
@@ -323,6 +323,50 @@ This is an example of where refactoring using AspectJ was particularly successfu
         \end{itemize}
 \end{enumerate}
 In this method, we observe a decrease in a method's dedication to logging from 14.28\% to 7.67\%, nearly a decrease in half.
+
+\subsubsection{\textbf{Exception Handling}}
+Metrics obtained from using aspects to encapsulate exception handling are described below. This was arguably the most powerful use of aspects and the aspect-oriented programming paradigm in our POC, as it \textit{completely} eliminated the use for \verb try-catch  mechanisms in our code.
+\begin{enumerate}
+    \item \verb Invaders.game()
+        \begin{itemize}
+            \item Advised by: \verb ExceptionsLogger.aj
+            \item SLOC related to exceptions prior to refactoring: 3
+            \item Total SLOC prior to refactoring: 32
+            \item DEDI prior to refactoring: 9.4\%
+            \item SLOC related to logging after aspects: 0
+            \item DEDI after refactoring = 0\%
+        \end{itemize}
+\end{enumerate}
+To fully illustrate what was enabled by the \verb ExceptionsLogger  aspect, we detail a small portion of the code before refactoring:
+\begin{verbatim}
+    try {
+        Thread.sleep(timeDiff/100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+\end{verbatim}
+
+The following is the identical call to \verb Thread.sleep(..)  after the introduction of the \verb ExceptionsLogger  aspect:
+\begin{verbatim}
+    Thread.sleep(timeDiff / 100);
+\end{verbatim}
+All of the exception handling logic is now delegated to the aspect, removing the crosscutting \verb try-catch  mechanism from the \verb game()  method. Other concrete examples can be seen in the source code hosted online.
+
+\subsubsection{\textbf{Score Tracking}}
+We detail the result of using aspects to target domain-specific crosscutting concerns in this section. It is clear that even for non-canonical applications of aspect-oriented programming with AspectJ, we can still improve code quality:
+\begin{enumerate}
+    \item \verb Invaders.updateWorld
+        \begin{itemize}
+            \item Advised by: \verb ScoreBoard.aj
+            \item SLOC related to scoreboard updates prior to refactoring: 1
+            \item Total SLOC prior to refactoring: 10
+            \item DEDI prior to refactoring: 10\%
+            \item SLOC related to scoreboard upates after refactoring: 0
+            \item DEDI after refactoring =  0\%
+        \end{itemize}
+\end{enumerate}
+Notice that through the use of aspects, we were able to remove the crosscutting calls to the update logic present in our \verb updateWorld()  method and others.
+
 
 \section{Extending Beyond the Proof-of-Concept}
 In the previous sections, we discussed the application of aspect-oriented programming to a small open-source software system via AspectJ. This was a proof-of-concept which served to showcase the mitigating effects which aspects have toward a system's crossscutting concerns. This section will detail additional features we would implement in our system. The low-risk approach details how we would go about implementing some, but not all of these features. The high-risk approach is comprised of the completion of the low-risk approach and some additional work.
