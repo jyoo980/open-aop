@@ -1,0 +1,422 @@
+\documentclass[sigconf]{acmart}
+\usepackage{graphicx}
+\usepackage{booktabs} % For formal tables
+\usepackage{enumitem}
+\makeatletter
+\def\subsubsection{\@startsection{subsubsection}{3}{10pt}%
+                                 {-.5\baselineskip \@plus -2\p@ \@minus -.2\p@}%
+                 {3.5\p@}{\subsubsectionfont}}
+\makeatother
+
+\newcommand{\SubItem}[1]{
+    {\setlength\itemindent{15pt} \item[-] #1}
+}
+
+% Copyright
+\setcopyright{none}
+https://www.overleaf.com/project/5bf4c2d4862ccb5e59717a6e
+% DOI
+\acmDOI{10.475/123_4}
+
+% ISBN
+\acmISBN{123-4567-24-567/08/06}
+
+\acmConference[CPSC 311]{Intro. PL}{2018W1}{UBC Vancouver}
+\acmYear{2018}
+\copyrightyear{2018}
+
+\acmArticle{4}
+\acmPrice{15.00}
+
+\begin{document}
+\title{Project Plan/Proof-of-Concept:\\ Refactoring an Open-source System with AspectJ}
+
+\author{Tony Kong}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{y2k0b@ugrad.cs.ubc.ca}
+
+\author{Raymond Situ}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{r7p0b@ugrad.cs.ubc.ca}
+
+\author{Kevin Wong}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{b2j0b@ugrad.cs.ubc.ca}
+
+\author{Benjamin Hwang}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{r6o0b@ugrad.cs.ubc.ca}
+
+\author{James Yoo}
+\affiliation{%
+  \institution{University of British Columbia}
+  \city{Vancouver}
+  \state{BC}
+}
+\email{l4k0b@ugrad.cs.ubc.ca}
+
+\begin{abstract}
+AspectJ is a powerful extension to the Java language which enables developers to apply a separation of concerns to a system with a high degree of crosscutting and scattering. This report details our refactoring of a small open-source project \footnote{https://github.com/jyoo980/aop-spaceinvaders} (a Java implementation of Space Invaders) using AspectJ, and describes a possible approach to refactoring a larger-scale software system with the lessons learned and insights provided from our initial work.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10011006.10011008.10011024.10011038</concept_id>
+<concept_desc>Software and its engineering~Frameworks</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[300]{Software and its engineering~Frameworks}
+
+\keywords{Software evolution, refactoring, aspect-oriented programming}
+\maketitle
+
+\section{Overview}
+After much consideration, our group has decided to achieve the 90\% completion level for this project. This means that this report will place greater detail and emphasis on the proof-of-concept (POC) we have produced and provide a high-level description of the project for our 100\% completion target. We detail the specific aspects we have created to mitigate the crosscutting concerns in our POC, and the specific issues that they helped resolve in the system. 
+
+\section{Proof-of-Concept Overview}
+In our background report \cite{background-rept}, we stated that we would utilize AspectJ to handle the crosscutting concerns of exception handling and logging in a software system. These concerns were present in the prototype system in the form of logging statements whenever a resource was loaded/a thread was created, or when an exception was thrown because of an IO error, or when a resource failed to load. Instances of these situations were scattered throughout the system, and provided us with numerous points where we could apply aspects. As a result,  our refactored POC system contains the following aspects. 
+\begin{enumerate}
+    \item \verb ExceptionsHandler.aj
+        \begin{itemize}
+            \item handles \verb InterruptedException  or any exceptions related to resource loading.
+        \end{itemize}
+    \item \verb InvadersLogger.aj  and \verb ResourceLogger.aj
+        \begin{itemize}
+            \item eliminates scattered log statements from the system, a classic use of Aspect-oriented programming.
+        \end{itemize}
+    \item \verb Scoreboard.aj
+        \begin{itemize}
+            \item a domain-specific use of aspects, all scattered score-keeping logic is encapsulated into this aspect.
+        \end{itemize}
+    \item \verb UpdateSpeed.aj
+        \begin{itemize}
+            \item another domain-specific aspect use, handles the update logic for the x/y speed of game objects.
+        \end{itemize}
+\end{enumerate}
+
+\section{Arriving at the Aspect}
+This section will detail the development and refactoring process we undertook to complete the POC.
+
+ \begin{figure}
+    \centering
+    \includegraphics[width=8cm]{scattering2.png}
+    \caption{crosscutting concerns found in aop-spaceinvaders}
+    \label{fig:1}
+\end{figure}
+
+\subsection{Identifying Crosscutting Concerns}
+This was possibly the easiest part of the development of the POC. We knew exactly what we were looking for in terms of classical concerns which could be targeted by aspects; namely, logging and exception handling. We also found domain-specific use cases of aspects in the form of score update logic, and x/y position update logic. A high level representation of the crosscutting nature of these concerns is displayed in \textit{figure 1}. The process of identifying these concerns was aided by the Eclipse IDE and its AspectJ Development Tools, which was an immensely powerful facility for visualizing crosscutting and where advice was applied in our refactored POC.
+
+\subsection{Identifying Join Points and Pointcuts}
+Identifying join points in our crosscutting concerns was the most creative component of the POC. This was due to the sheer number of patterns which we could use to match points on our program. We then composed these join points into pointcuts which we then applied advice to. In this section, we document our approach to extracting join points which we then utilized to form our pointcuts for our aspects.
+\subsubsection{\textbf{Logging}}
+We have a method \verb addInvaders()  in a class \verb Invaders
+\begin{verbatim}
+    public void addInvaders() {
+        // Boilerplate omitted
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < cols; j++)
+                Invader inv = new Invader(this);
+        }
+        LOGGER.info("Created " + rows * cols + " invaders.");
+    }
+\end{verbatim}
+We wanted to remove the logging line in this method. We could easily identify the join points for the pointcut we would use to capture this log statement, which were:
+\begin{itemize}
+    \item \verb within(Invaders)
+    \item \verb execution(*  \verb Invaders.addInvaders(..))
+\end{itemize}
+It is important to note that the above two join points are only a small subset of other equally valid ones which could have been used instead. We then compose the join points above into a valid pointcut, which is described below:
+\begin{verbatim}
+    pointcut addingInvaders():
+        within(Invaders) &&
+        execution(* Invaders.addInvaders(..));
+\end{verbatim}
+After the composition of the pointcut \verb addingInvaders(), we would then start to 
+create our advice. This will be detailed later, along with our process in creating aspects, in section \textbf{3.3.1}
+
+\subsubsection{\textbf{Exception Handling}}
+There were a number of exceptions thrown in the \verb aop-spaceinvaders  system. We detail one here as an example of how we picked out join points for our exception-handling aspects for our POC. We have the following method in our class \verb ResourceLoader. The code is shown below:
+\begin{verbatim}
+    public void getSprite(String name) {
+        // Boilerplate omitted
+        try {
+            // Boilerplate omitted
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+\end{verbatim}
+This is a particularly interesting case since there are many ways to pick out join points for this exception handling. We decided to select join points such that they would be very specific as to when our advice would execute. Our join points are shown below:
+\begin{itemize}
+    \item \verb execution(*  \verb ResourceLoader.getSprite(..))
+    \item \verb args(name)
+    \item \verb target(rLoader)
+\end{itemize}
+The first join point is fairly standard, highlighting a time in the control flow of the system when \verb getSprite(..)  is executed. The second, \verb args(name)  is interesting since it allows us to pick out the exact argument which \verb getSprite(..)  is called with. The primitive join point \verb target(rLoader)  is also powerful since it enables us access to the calling object in the body of our advice. We then composed these three join points into the pointcut below
+\begin{verbatim}
+    pointcut spriteExn(String name, ResourceLoader rLoader):
+        execution(* ResourceLoader.getSprite(..)) &&
+        args(name) &&
+        target(rLoader)
+\end{verbatim}
+This pointcut is one of the most complex we've designed, and its corresponding advice will provide interesting insight into AspectJ's powerful mechanisms for aspects which are able to perform elegant error handling. We explore its corresponding advice in \textbf{3.3.2}
+
+\subsubsection{\textbf{Score Tracking}}
+The domain-specific logic related to score tracking in Space Invaders pushed us to identify join points and compose pointcuts outside of the usual realm of logging and exception handling. We had the method below which was called whenever a collision occurred between the object upon it was called and another, in class \verb Actor
+\begin{verbatim}
+    public void setMarkedForRemoval(boolean remove) {
+        this.markedForRemoval = remove;
+    }
+\end{verbatim}
+This is an extremely important method. The class \verb Actor  is a superclass which many, if not all of the objects in \verb aop-spaceinvaders  extend. Because of this, there were a large number of calls to this method effectively scattered throughout the system, and not just when each time the score for the game is updated. This is exactly the type of situation that Kiczales et al described when they said that they "have found many programming problems for which neither procedural nor object-oriented programming techniques are sufficient to clearly capture some of the important design decisions the program must implement." \cite{Kiczales} - i.e. it is a problem which OOP cannot cleanly modularize. We captured calls to this method with the following join points
+\begin{itemize}
+    \item \verb call(void  \verb Actor.setMarkedForRemoval(..))
+    \item \verb args(isMarked)
+\end{itemize}
+We then composed the following pointcut with the join points we selected above:
+\begin{verbatim}
+    pointcut hit(boolean isMarked):
+        call(void Actor.setMarkedForRemoval(..)) &&
+        args(isMarked)
+\end{verbatim}
+Although this appears to be a simple pointcut, its utility will become evident in \textbf{3.3.3} when we create advice which uses it.
+
+\subsection{Advice and Aspects}
+In the previous section, we explored how we picked out join points and composed pointcuts for our crosscutting concerns. We now detail the advice we apply in our refactoring process to integrate AspectJ into \verb aop-spaceinvaders. Specifically, we explore the development process of \verb InvadersLogger,  \verb ExceptionsHandler,  and \verb Scoreboard.
+
+\subsubsection{\textbf{Logging}}
+In \textbf{3.2.1}, we created the following pointcut from the join points we picked out to represent the logic which added invaders into the game during startup:
+\begin{verbatim}
+    pointcut addingInvaders():
+        within(Invaders) &&
+        execution(* Invaders.addInvaders(..));
+\end{verbatim}
+We want to log the total number of invaders that were instantiated in the game, exactly like how it is done without using aspects in the previous version. In order to do this, we create another pointcut:
+\begin{verbatim}
+    pointcut invaderConstructor():
+        call(Invader.new(..));
+\end{verbatim}
+With these two pointuts in place, we can now construct the aspect \verb InvadersLogger.aj:
+\begin{verbatim}
+privileged aspect InvadersLogger {
+    private int invaders = 0;
+    private final Logger Log = Logger.getInstance();
+        
+    // Pointcuts are as shown in 3.2.1
+        
+    after(): invaderConstructor() {
+        this.invaders++;
+    }
+        
+    after(): addInvaders() {
+        Log.info("Created: " + this.invaders + " invaders");
+    }
+}
+\end{verbatim}
+There are a few things of note here: firstly, the full source code of this aspect and all other aspects mentioned in this section are available in the online repository \verb aop-spaceinvaders \footnote{https://github.com/jyoo980/aop-spaceinvaders}, and the second is the fact that there are a number of similarities between a Java class and an aspect. For example, just like a class, an aspect is permitted to have class members with the usual access modifiers (private, public, protected, etc...). The reserved keyword \verb privileged, enables the \verb InvadersLogger aspect to have access to the private members of classes referenced by our pointcuts. This is important because it allows for greater flexibility in handling crosscutting concerns while still maintaining access control and requiring a minimal number of changes, if any, to the original classes. There is another aspect which handles logging, \verb ResourceLogger, but for the sake of brevity, an exploration into that will be omitted in lieu of the source code being available online to view. We now move on to a discussion of the aspect for exception handling.
+
+\subsubsection{\textbf{Exception handling}}
+This section continues the discussion of utilizing aspects to handle exceptions which was started in \textbf{3.2.2}. We'll use the same pointcut, \verb spriteExn(..)  to inform our discussion here. In our POC, we still want to maintain the same level of robustness as we had before, but with the removal of \verb try-catch  mechanisms from any non-aspect code. We arrive at the aspect \verb ExceptionsHandler:
+\begin{verbatim}
+privileged aspect ExceptionsHandler {
+    
+    // Pointcuts are as shown in 3.2.2
+    
+    declare soft: IOException:
+        execution(* ResourceLoader.getSprite(..));
+        
+    BufferedImage around(String n, ResourceLoader rl): 
+        spriteExn(n, rl) {
+        try {
+            proceed(n, rl);
+        } catch (IOException e) {
+            // Log Here
+        } 
+        return rl.images.get(name();
+    }
+}
+\end{verbatim}
+Again, some parts of \verb ExceptionsHandler  are omitted for brevity and the full source code may be viewed online. We have the statement:
+\begin{verbatim}
+    declare soft: IOException:
+        execution(* ResourceLoader.getSprite(..));
+\end{verbatim}
+This is a construct of the AspectJ language which enables us to remove \verb try-catch  mechanisms around a line of code which throws an exception, in this case, we will not have to surround a call to \verb getSprite(..)  since we have declared it to be "softened". Note that this does not mean an exception is \textit{not} thrown. It is indeed thrown, but it is now allowed to be intercepted by our \verb around  advice. Note that in the body of our advice, we execute the body of the original method by calling \verb proceed(n, \verb rl). However, we no longer require a \verb try-catch  block within the original body of \verb getSprite(..).
+
+\subsubsection{\textbf{Score Tracking}}
+Last, but not least, we return to our domain-specific use of aspects for our Space Invaders game. We had a remarkably simple pointcut which captured points in the control flow when a collision occurred between an object and another:
+\begin{verbatim}
+    pointcut hit(boolean isMarked): 
+        call(void Actor.setMarkedForRemoval(..)) &&
+        args(isMarked)
+\end{verbatim}
+However, we leverage this simple pointcut to create the aspect below:
+\begin{verbatim}
+public aspect Scoreboard {
+    
+    private int score = 0;
+    // Pointcuts same as 3.2.3
+    
+    after(Actor actor, boolean isMarked):
+        target(actor) && hit(isMarked) {
+        if (isMarked) {
+            this.score++;
+        }
+    }
+}
+\end{verbatim}
+This \verb after  advice is an \textit{amazingly} powerful piece of code. It will execute after each point which matches with the pointcut \verb hit. This will effectively match any and all collisions between two objects which extend the \verb Actor  class. This is an example of how aspect-oriented programming used in conjunction with object-oriented programming enables developers to write some very powerful programs.
+
+\subsection{Results}
+By composing together a number of available join points, pointcuts, and advice, we have arrived at a relatively well-formed exploration of some basic aspects. We have created aspects for error handling, logging, and an aspect for our domain-specific concern of keeping track of and updating our game score. In \textbf{4}, we explore what effect, if any, these aspects had on the overall quality of our system.
+
+\section{Metrics}
+In this section, we use the software metric \textit{ Dedication (DEDI)} \cite{murphy} to measure the effect that the use of aspects had in our system. DEDI is given by the formula below:
+
+$$DEDI(t, s) = \frac{\text{SLOC in component t related to concern s}}{\text{SLOC in component t}}$$
+Where SLOC refers to \textit{Source Lines Of Code}. This equation will form the basis for our basic static anaylsis in reasoning about the effects of aspects in our system. For the purposes of this POC, each component will be a method that is now advised by an aspect, and the concerns explored will be the ones mentioned in previous sections, that is: logging, exception handling, and score updating.
+
+\subsubsection{\textbf{Logging}}
+We will look at a few methods (components) that are now advised by either of the aspects \verb InvadersLogger  or \verb ResourceLogger.
+\begin{enumerate}
+    \item \verb InputHandler.handleInput(KeyEvent  \verb event)
+        \begin{itemize}
+            \item Advised by: \verb InvadersLogger.aj
+            \item SLOC related to logging prior to refactoring: 2
+            \item Total SLOC prior to refactoring: 10
+            \item DEDI prior to refactoring = 20\%
+            \item SLOC related to logging after aspects: 0
+            \item DEDI after refactoring = 0\%
+        \end{itemize}
+\end{enumerate}
+This is an example of where refactoring using AspectJ was particularly successful; the component no longer has any lines of code which are related to a crosscutting concern (in this case, logging). Therefore, the dedication of this method with respect to logging is now 0.
+\begin{enumerate}[resume]
+    \item \verb ResourceLoader.getSprite(String  \verb name)
+        \begin{itemize}
+            \item Advised by: \verb ResourceLogger.aj 
+            \\ and \verb ExceptionsHandler.aj
+            \item SLOC related to logging prior to refactoring: 2
+            \item Total SLOC prior to refactoring: 14
+            \item DEDI prior to refactoring: 14.28\%
+            \item SLOC related to logging after aspects: 0
+            \item DEDI after refactoring = 0\%
+        \end{itemize}
+\end{enumerate}
+In this method, we observe a decrease in a method's dedication to logging from 14.28\% to 0\%. We are able to remove all instances of logging from our \verb getSprite  method by having two different aspects handle the different crosscutting concerns related to our logging logic.
+
+\subsubsection{\textbf{Exception Handling}}
+Metrics obtained from using aspects to encapsulate exception handling are described below. This was arguably the most powerful use of aspects and the aspect-oriented programming paradigm in our POC, as it \textit{completely} eliminated the use for \verb try-catch  mechanisms in our code.
+\begin{enumerate}
+    \item \verb Invaders.game()
+        \begin{itemize}
+            \item Advised by: \verb ExceptionsLogger.aj
+            \item SLOC related to exceptions prior to refactoring: 3
+            \item Total SLOC prior to refactoring: 32
+            \item DEDI prior to refactoring: 9.4\%
+            \item SLOC related to logging after aspects: 0
+            \item DEDI after refactoring = 0\%
+        \end{itemize}
+\end{enumerate}
+To fully illustrate what was enabled by the \verb ExceptionsLogger  aspect, we detail a small portion of the code before refactoring:
+\begin{verbatim}
+    try {
+        Thread.sleep(timeDiff/100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+\end{verbatim}
+The following is the identical call to \verb Thread.sleep(..)  after the introduction of the \verb ExceptionsLogger  aspect:
+\begin{verbatim}
+    Thread.sleep(timeDiff / 100);
+\end{verbatim}
+All of the exception handling logic is now delegated to the aspect, removing the crosscutting \verb try-catch  mechanism from the \verb game()  method. Other concrete examples can be seen in the source code hosted online.
+
+\subsubsection{\textbf{Score Tracking}}
+We detail the result of using aspects to target domain-specific crosscutting concerns in this section. It is clear that even for non-canonical applications of aspect-oriented programming with AspectJ, we can still improve code quality:
+\begin{enumerate}
+    \item \verb Invaders.updateWorld
+        \begin{itemize}
+            \item Advised by: \verb ScoreBoard.aj
+            \item SLOC related to scoreboard updates prior to refactoring: 3
+            \item Total SLOC prior to refactoring: 17
+            \item DEDI prior to refactoring: 17.6\%
+            \item SLOC related to scoreboard upates after refactoring: 0
+            \item DEDI after refactoring =  0\%
+        \end{itemize}
+\end{enumerate}
+Notice that through the use of aspects, we were able to remove the crosscutting calls to the update logic present in our \verb updateWorld()  method and others.
+
+
+\section{Extending Beyond the Proof-of-Concept}
+In the previous sections, we discussed the application of aspect-oriented programming to a small open-source software system via AspectJ. This was a proof-of-concept which served to showcase the mitigating effects which aspects have toward a system's crosscutting concerns. This section will detail additional features we would implement in our system. The low-risk approach details how we would go about implementing some, but not all of these features. The high-risk approach is comprised of the completion of the low-risk approach and some additional work.
+
+\subsubsection{\textbf{The Low-risk Approach}}
+
+A low risk approach to extending our project beyond the POC phase would be to select a larger open source software system and apply the same approach to it as we did with our POC. That is, we would:
+\begin{enumerate}
+    \item Identify crosscutting concerns.
+    \item Generate aspects to capture said concerns.
+    \item Obtain software quality metrics from utilizing aspects.
+\end{enumerate}
+We would utilize the same \textit{DEDI} metric as we used in our POC, with an additional metric proposed by Murphy et al:
+
+$$DOF(t) = \frac{|S| \sum_S^S(DEDI(t,s) - \frac{1}{|S|})^2}{|S| - 1}$$
+\textit{DOF}, or \textit{Degree of Focus} is a measure of "how well concerns are separated in a component" \cite{murphy}. This would enable us to better reason about the effects of refactoring a system with AspectJ.
+
+\subsubsection{\textbf{The High-risk Approach}}
+
+This approach would take our project to a far larger scale. We would select a project from one of the open-source projects as we described in our background report: Mockito, Guava, or IntelliJ. Then apply the same aspect-oriented refactoring process with an important additional component:
+\begin{enumerate}
+    \item Run the jPeek \footnote{https://github.com/yegor256/jpeek} Java static anaylsis tool on our large-scale project.
+\end{enumerate}
+The jPeek tool is an automated application which enables a developer to statically derive a number of metrics. We would focus on the available metrics below:
+\begin{itemize}
+    \item Class cohesion
+    \item Method cohesion
+\end{itemize}
+We would use these metrics to inform our study of AspectJ and the effects it has on an open source system at scale. We believe that this would be an appropriate reach goal because of two reasons:
+\begin{enumerate}
+    \item The need to get familiar with and refactor an \textit{industrial} grade software system, e.g. Mokito, Guava, IntelliJ.
+    \item The need to deploy and run an unfamiliar tool (jPeek) on a refactored system.
+\end{enumerate}
+The reasons above constitute a significant amount of time and work invested into this project, and would constitute the full 100\% goal of our deep refactoring of an open source system using AspectJ.
+
+\begin{thebibliography}{9}
+\bibitem{background-rept}
+AspectJ, A Pragmatic Approach to Cross-cutting Concerns
+\textit{CPSC 311, 2018W1}. 
+
+\bibitem{Kiczales}
+Kiczales et al, 1997: 
+\textit{Aspect Oriented Programming}. 
+European conference on object-oriented programming, 220-242
+
+\bibitem{murphy}
+Murphy et al, 2007: 
+\textit{Identifying, Assigning, and Quantifying Crosscutting Concerns}
+Proceedings of the First International Workshop on Assessment of Contemporary Modularization Techniques
+
+\end{thebibliography}
+
+\end{document}
+
