@@ -387,10 +387,10 @@ We have three candidate open source projects.
 All three of our candidate projects have a large number of our target cross-cutting concerns, and are widely used. An analysis and refactor of any of our candidates will provide insight into the number of cross-cutting concerns in a developed system and highlight the positives and negatives of AspectJ.
 
 \subsection{The 100\% Project in Detail}
-If we were to accomplish 100\% of our project, we would chose to refactor Mockito using AspectJ. The reason for this is because of the fact that it is an industrial-grade open-source project with rich documentation, and because it contains the classical candidates for AspectJ's use cases. Examples include the large number of user-defined exceptions in the project, as well as the \verb MockitoSessionLogger  class which could be easily refactored into an Aspect.
+If we were to accomplish 100\% of our project, we would chose to refactor IntelliJ using AspectJ. The reason for this is because of the fact that it is an industrial-grade open-source project with rich documentation, and because it contains the classical candidates for AspectJ's use cases. Examples include the large number of user-defined exceptions in the project, as well as the \verb VcsLog  class.
 
 \subsection{The Target Project in Detail}
-We will refactor a smaller open source project \footnote{https://github.com/jyoo980/aop-spaceinvaders} which is an implementation of Space Invaders in Java. The reasons why we chose this project as opposed to the 100\% project are as follows
+For our target project, we selected an open-source implentation of the classic game Space Invaders. The original project can be found online at the GitHub Repository: yogthos/Space-Invaders \footnote{https://github.com/yogthos/Space-Invaders}. The system evolved with AspectJ is found on GitHub at: jyoo980/aop-spaceinvaders \footnote{https://github.com/jyoo980/aop-spaceinvaders} The reasons why we chose this project as opposed to the 100\% project are as follows
 \begin{enumerate}
     \item Familiarity with the domain
     \item Smaller, and manageable project size
@@ -402,13 +402,6 @@ Although we undertake a refactoring of a smaller project, it is important to not
 After we perform our refactor of the system using AspectJ, we expect that less concerns in the system will be crosscutting. We will investigate this hypothesis by re-analyzing the system with the same methods as previously described. 
 \\
 In our results, we also plan to highlight the limitations of AspectJ as previously mentioned in section \textbf{3}. We believe that this will be a point of interest in attempting to understand and reason about the design and developer compromises associated with using AspectJ, and aspect-oriented programming in general.
-
-
-
-
-
-
-
  \begin{figure}
     \centering
     \includegraphics[width=8cm]{scattering.png}
